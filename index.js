@@ -209,13 +209,26 @@ app.post("/newOrder", async (req, res) => {
     mode: req.body.mode,
   });
 
-  newOrder.save();
+  await newOrder.save();
   res.send("Order save");
 });
 
-app.listen(PORT, ()=>{
-    console.log("App started");
-    mongoose.connect(uri);
-    console.log("pk")
+// app.listen(PORT, ()=>{
+//     console.log("App started");
+//     mongoose.connect(uri);
+//     console.log("pk")
 
-})
+// })
+
+mongoose.connect(uri)
+  .then(() => {
+    console.log("MongoDB Connected Successfully");
+
+    app.listen(PORT, () => {
+      console.log(`Server started on PORT ${PORT}`);
+    });
+
+  })
+  .catch((err) => {
+    console.error("MongoDB Connection Failed:", err);
+  });
